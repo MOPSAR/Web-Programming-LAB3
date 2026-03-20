@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2048</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1 class="title">2048</h1>
+
+      <div class="score-panel">
+        <div class="score-box">
+          <span class="score-label">Счёт</span>
+          <strong id="score">0</strong>
+        </div>
+      </div>
+
+      <div class="top-controls">
+        <button id="newGameBtn">Новая игра</button>
+        <button id="undoBtn">Отмена хода</button>
+        <button id="leadersBtn">Лидеры</button>
+      </div>
+    </header>
+
+    <main class="game-section">
+      <div class="board-wrapper">
+        <div class="board" id="board"></div>
+
+        <div class="game-over hidden" id="gameOver">
+          <h2 id="gameOverMessage">Игра окончена</h2>
+          <input
+            type="text"
+            id="playerName"
+            placeholder="Введите имя"
+            maxlength="20"
+          />
+          <button id="saveScoreBtn">Сохранить результат</button>
+          <button id="restartBtn">Начать заново</button>
+        </div>
+      </div>
+
+      <div class="mobile-controls" id="mobileControls">
+        <button data-direction="up">↑</button>
+        <div class="mobile-row">
+          <button data-direction="left">←</button>
+          <button data-direction="down">↓</button>
+          <button data-direction="right">→</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="leaders-modal hidden" id="leadersModal">
+    <div class="leaders-content">
+      <h2>Таблица лидеров</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Имя</th>
+            <th>Очки</th>
+            <th>Дата</th>
+          </tr>
+        </thead>
+        <tbody id="leadersTableBody"></tbody>
+      </table>
+
+      <button id="closeLeadersBtn">Закрыть</button>
+    </div>
+  </div>
+
+  <script src="./js/storage.js"></script>
+  <script src="./js/ui.js"></script>
+  <script src="./js/game.js"></script>
+</body>
+</html>
