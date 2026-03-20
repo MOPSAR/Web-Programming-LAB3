@@ -301,6 +301,17 @@ function startGame() {
   clearPreviousState();
 }
 
+function handleSaveScore() {
+  const playerName = playerNameInput.value.trim();
+
+  if (!playerName) {
+    return;
+  }
+
+  saveLeaderRecord(playerName, gameState.score);
+  showSavedRecordMessage();
+}
+
 document.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft') {
     handleMove('left');
@@ -324,6 +335,7 @@ document.getElementById('restartBtn').addEventListener('click', startGame);
 document.getElementById('leadersBtn').addEventListener('click', openLeadersModal);
 document.getElementById('closeLeadersBtn').addEventListener('click', closeLeadersModal);
 document.getElementById('undoBtn').addEventListener('click', undoMove);
+saveScoreBtn.addEventListener('click', handleSaveScore);
 
 if (!restoreSavedGame()) {
   startGame();

@@ -5,6 +5,7 @@ const gameOverMessageElement = document.getElementById('gameOverMessage');
 const playerNameInput = document.getElementById('playerName');
 const saveScoreBtn = document.getElementById('saveScoreBtn');
 const leadersModal = document.getElementById('leadersModal');
+const leadersTableBody = document.getElementById('leadersTableBody');
 
 function getTileClass(value) {
   return `tile-${value}`;
@@ -50,7 +51,30 @@ function hideGameOver() {
   playerNameInput.value = '';
 }
 
+function renderLeadersTable() {
+  const leaders = loadLeaders();
+  leadersTableBody.innerHTML = '';
+
+  if (leaders.length === 0) {
+    const emptyRow = document.createElement('tr');
+    emptyRow.innerHTML = '<td colspan="3">Рекордов пока нет</td>';
+    leadersTableBody.appendChild(emptyRow);
+    return;
+  }
+
+  leaders.forEach(leader => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${leader.name}</td>
+      <td>${leader.score}</td>
+      <td>${leader.date}</td>
+    `;
+    leadersTableBody.appendChild(row);
+  });
+}
+
 function openLeadersModal() {
+  renderLeadersTable();
   leadersModal.classList.remove('hidden');
 }
 
@@ -60,4 +84,10 @@ function closeLeadersModal() {
 
 function isLeadersModalOpen() {
   return !leadersModal.classList.contains('hidden');
+}
+
+function showSavedRecordMessage() {
+  playerNameInput.classList.add('hidden');
+  saveScoreBtn.classList.add('hidden');
+  gameOverMessageElement.textContent = 'Ваш рекорд сохранён';
 }
