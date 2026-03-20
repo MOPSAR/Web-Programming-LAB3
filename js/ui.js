@@ -6,6 +6,7 @@ const playerNameInput = document.getElementById('playerName');
 const saveScoreBtn = document.getElementById('saveScoreBtn');
 const leadersModal = document.getElementById('leadersModal');
 const leadersTableBody = document.getElementById('leadersTableBody');
+const mobileControls = document.getElementById('mobileControls');
 
 function getTileClass(value) {
   return `tile-${value}`;
@@ -35,12 +36,21 @@ function updateScore(score) {
   scoreElement.textContent = score;
 }
 
+function showMobileControls() {
+  mobileControls.classList.remove('hidden');
+}
+
+function hideMobileControls() {
+  mobileControls.classList.add('hidden');
+}
+
 function showGameOver() {
   gameOverElement.classList.remove('hidden');
   gameOverMessageElement.textContent = 'Игра окончена';
   playerNameInput.classList.remove('hidden');
   saveScoreBtn.classList.remove('hidden');
   playerNameInput.value = '';
+  hideMobileControls();
 }
 
 function hideGameOver() {
@@ -49,6 +59,7 @@ function hideGameOver() {
   playerNameInput.classList.remove('hidden');
   saveScoreBtn.classList.remove('hidden');
   playerNameInput.value = '';
+  showMobileControls();
 }
 
 function renderLeadersTable() {
@@ -76,10 +87,17 @@ function renderLeadersTable() {
 function openLeadersModal() {
   renderLeadersTable();
   leadersModal.classList.remove('hidden');
+  hideMobileControls();
 }
 
 function closeLeadersModal() {
   leadersModal.classList.add('hidden');
+
+  if (!gameOverElement.classList.contains('hidden')) {
+    hideMobileControls();
+  } else {
+    showMobileControls();
+  }
 }
 
 function isLeadersModalOpen() {
@@ -90,4 +108,5 @@ function showSavedRecordMessage() {
   playerNameInput.classList.add('hidden');
   saveScoreBtn.classList.add('hidden');
   gameOverMessageElement.textContent = 'Ваш рекорд сохранён';
+  hideMobileControls();
 }

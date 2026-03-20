@@ -169,6 +169,10 @@ button {
   gap: 10px;
 }
 
+.mobile-controls.hidden {
+  display: none !important;
+}
+
 .mobile-row {
   display: flex;
   gap: 10px;

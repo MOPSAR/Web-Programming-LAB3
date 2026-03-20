@@ -330,6 +330,13 @@ document.addEventListener('keydown', event => {
   }
 });
 
+document.querySelectorAll('.mobile-controls button').forEach(button => {
+  button.addEventListener('click', () => {
+    const direction = button.dataset.direction;
+    handleMove(direction);
+  });
+});
+
 document.getElementById('newGameBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 document.getElementById('leadersBtn').addEventListener('click', openLeadersModal);
