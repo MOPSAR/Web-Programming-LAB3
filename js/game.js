@@ -156,7 +156,41 @@ function checkGameOver() {
   if (!hasAvailableMoves()) {
     gameState.gameOver = true;
     showGameOver();
+    saveCurrentGame();
   }
+}
+
+function saveCurrentGame() {
+  saveGameState({
+    grid: gameState.grid,
+    score: gameState.score,
+    gameOver: gameState.gameOver
+  });
+}
+
+function restoreSavedGame() {
+  const savedState = loadGameState();
+
+  if (!savedState) {
+    return false;
+  }
+
+  gameState.grid = savedState.grid;
+  gameState.score = savedState.score;
+  gameState.gameOver = savedState.gameOver;
+
+  renderBoard(gameState.grid);
+  updateScore(gameState.score);
+
+  if (gameState.gameOver) {
+    showGameOver();
+  } else {
+    hideGameOver();
+  }
+
+  closeLeadersModal();
+
+  return true;
 }
 
 function handleMove(direction) {
@@ -201,6 +235,7 @@ function handleMove(direction) {
   renderBoard(gameState.grid);
   updateScore(gameState.score);
   checkGameOver();
+  saveCurrentGame();
 }
 
 function startGame() {
@@ -218,6 +253,7 @@ function startGame() {
   updateScore(gameState.score);
   hideGameOver();
   closeLeadersModal();
+  saveCurrentGame();
 }
 
 document.addEventListener('keydown', event => {
@@ -243,4 +279,6 @@ document.getElementById('restartBtn').addEventListener('click', startGame);
 document.getElementById('leadersBtn').addEventListener('click', openLeadersModal);
 document.getElementById('closeLeadersBtn').addEventListener('click', closeLeadersModal);
 
-startGame();
+if (!restoreSavedGame()) {
+  startGame();
+}
