@@ -325,3 +325,8 @@ th {
   color: #ffffff;
   font-size: 20px;
 }
+
+.leaders-modal.hidden,
+.game-over.hidden {
+  display: none;
+}

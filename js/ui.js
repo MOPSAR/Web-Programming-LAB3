@@ -4,6 +4,7 @@ const gameOverElement = document.getElementById('gameOver');
 const gameOverMessageElement = document.getElementById('gameOverMessage');
 const playerNameInput = document.getElementById('playerName');
 const saveScoreBtn = document.getElementById('saveScoreBtn');
+const leadersModal = document.getElementById('leadersModal');
 
 function getTileClass(value) {
   return `tile-${value}`;
@@ -47,4 +48,16 @@ function hideGameOver() {
   playerNameInput.classList.remove('hidden');
   saveScoreBtn.classList.remove('hidden');
   playerNameInput.value = '';
+}
+
+function openLeadersModal() {
+  leadersModal.classList.remove('hidden');
+}
+
+function closeLeadersModal() {
+  leadersModal.classList.add('hidden');
+}
+
+function isLeadersModalOpen() {
+  return !leadersModal.classList.contains('hidden');
 }

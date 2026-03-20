@@ -160,7 +160,7 @@ function checkGameOver() {
 }
 
 function handleMove(direction) {
-  if (gameState.gameOver) {
+  if (gameState.gameOver || isLeadersModalOpen()) {
     return;
   }
 
@@ -217,6 +217,7 @@ function startGame() {
   renderBoard(gameState.grid);
   updateScore(gameState.score);
   hideGameOver();
+  closeLeadersModal();
 }
 
 document.addEventListener('keydown', event => {
@@ -239,5 +240,7 @@ document.addEventListener('keydown', event => {
 
 document.getElementById('newGameBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
+document.getElementById('leadersBtn').addEventListener('click', openLeadersModal);
+document.getElementById('closeLeadersBtn').addEventListener('click', closeLeadersModal);
 
 startGame();
