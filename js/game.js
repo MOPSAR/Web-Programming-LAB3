@@ -130,6 +130,35 @@ function moveDown(grid) {
   };
 }
 
+function hasAvailableMoves() {
+  if (getEmptyCells().length > 0) {
+    return true;
+  }
+
+  for (let row = 0; row < 4; row++) {
+    for (let col = 0; col < 4; col++) {
+      const currentValue = gameState.grid[row][col];
+
+      if (col < 3 && currentValue === gameState.grid[row][col + 1]) {
+        return true;
+      }
+
+      if (row < 3 && currentValue === gameState.grid[row + 1][col]) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
+function checkGameOver() {
+  if (!hasAvailableMoves()) {
+    gameState.gameOver = true;
+    showGameOver();
+  }
+}
+
 function handleMove(direction) {
   if (gameState.gameOver) {
     return;
@@ -171,6 +200,7 @@ function handleMove(direction) {
 
   renderBoard(gameState.grid);
   updateScore(gameState.score);
+  checkGameOver();
 }
 
 function startGame() {
@@ -186,6 +216,7 @@ function startGame() {
 
   renderBoard(gameState.grid);
   updateScore(gameState.score);
+  hideGameOver();
 }
 
 document.addEventListener('keydown', event => {
@@ -205,5 +236,8 @@ document.addEventListener('keydown', event => {
     handleMove('down');
   }
 });
+
+document.getElementById('newGameBtn').addEventListener('click', startGame);
+document.getElementById('restartBtn').addEventListener('click', startGame);
 
 startGame();

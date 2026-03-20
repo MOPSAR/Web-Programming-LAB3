@@ -1,5 +1,9 @@
 const board = document.getElementById('board');
 const scoreElement = document.getElementById('score');
+const gameOverElement = document.getElementById('gameOver');
+const gameOverMessageElement = document.getElementById('gameOverMessage');
+const playerNameInput = document.getElementById('playerName');
+const saveScoreBtn = document.getElementById('saveScoreBtn');
 
 function getTileClass(value) {
   return `tile-${value}`;
@@ -27,4 +31,20 @@ function renderBoard(grid) {
 
 function updateScore(score) {
   scoreElement.textContent = score;
+}
+
+function showGameOver() {
+  gameOverElement.classList.remove('hidden');
+  gameOverMessageElement.textContent = 'Игра окончена';
+  playerNameInput.classList.remove('hidden');
+  saveScoreBtn.classList.remove('hidden');
+  playerNameInput.value = '';
+}
+
+function hideGameOver() {
+  gameOverElement.classList.add('hidden');
+  gameOverMessageElement.textContent = 'Игра окончена';
+  playerNameInput.classList.remove('hidden');
+  saveScoreBtn.classList.remove('hidden');
+  playerNameInput.value = '';
 }
