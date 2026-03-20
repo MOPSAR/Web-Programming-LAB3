@@ -4,6 +4,8 @@ const gameState = {
   gameOver: false
 };
 
+let previousState = null;
+
 function createEmptyGrid() {
   return Array.from({ length: 4 }, () => Array(4).fill(0));
 }
@@ -168,8 +170,18 @@ function saveCurrentGame() {
   });
 }
 
+function saveCurrentPreviousState() {
+  if (!previousState) {
+    clearPreviousState();
+    return;
+  }
+
+  savePreviousState(previousState);
+}
+
 function restoreSavedGame() {
   const savedState = loadGameState();
+  const savedPreviousState = loadPreviousState();
 
   if (!savedState) {
     return false;
@@ -178,6 +190,8 @@ function restoreSavedGame() {
   gameState.grid = savedState.grid;
   gameState.score = savedState.score;
   gameState.gameOver = savedState.gameOver;
+
+  previousState = savedPreviousState;
 
   renderBoard(gameState.grid);
   updateScore(gameState.score);
@@ -191,6 +205,28 @@ function restoreSavedGame() {
   closeLeadersModal();
 
   return true;
+}
+
+function undoMove() {
+  if (gameState.gameOver) {
+    return;
+  }
+
+  if (!previousState) {
+    return;
+  }
+
+  gameState.grid = previousState.grid.map(row => [...row]);
+  gameState.score = previousState.score;
+  gameState.gameOver = previousState.gameOver;
+
+  previousState = null;
+
+  renderBoard(gameState.grid);
+  updateScore(gameState.score);
+  hideGameOver();
+  saveCurrentGame();
+  clearPreviousState();
 }
 
 function handleMove(direction) {
@@ -221,6 +257,12 @@ function handleMove(direction) {
     return;
   }
 
+  previousState = {
+    grid: gameState.grid.map(row => [...row]),
+    score: gameState.score,
+    gameOver: gameState.gameOver
+  };
+
   gameState.grid = result.newGrid;
   gameState.score += result.moveScore;
 
@@ -236,12 +278,14 @@ function handleMove(direction) {
   updateScore(gameState.score);
   checkGameOver();
   saveCurrentGame();
+  saveCurrentPreviousState();
 }
 
 function startGame() {
   gameState.grid = createEmptyGrid();
   gameState.score = 0;
   gameState.gameOver = false;
+  previousState = null;
 
   const startTilesCount = getRandomInt(1, 3);
 
@@ -254,6 +298,7 @@ function startGame() {
   hideGameOver();
   closeLeadersModal();
   saveCurrentGame();
+  clearPreviousState();
 }
 
 document.addEventListener('keydown', event => {
@@ -278,6 +323,7 @@ document.getElementById('newGameBtn').addEventListener('click', startGame);
 document.getElementById('restartBtn').addEventListener('click', startGame);
 document.getElementById('leadersBtn').addEventListener('click', openLeadersModal);
 document.getElementById('closeLeadersBtn').addEventListener('click', closeLeadersModal);
+document.getElementById('undoBtn').addEventListener('click', undoMove);
 
 if (!restoreSavedGame()) {
   startGame();
